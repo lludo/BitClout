@@ -40,7 +40,7 @@ struct Transaction: Codable {
     let rawTransactionHex: String // Contains submitted post, private message, etc.
     let signatureHex: String
     let transactionIDBase58Check: String
-    let transactionMetadata: TransactionMetadata? // The transactionType .blockReward has no metadata
+    let transactionMetadata: TransactionMetadata? // The genesis block has no metadata
     let transactionType: TransactionType
 }
 

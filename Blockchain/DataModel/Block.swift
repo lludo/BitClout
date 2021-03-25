@@ -1,5 +1,5 @@
 //
-//  Response.swift
+//  Block.swift
 //  BitClout
 //
 //  Created by Ludovic Landry on 3/19/21.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Response: Codable {
+struct Block: Codable {
     
     enum CodingKeys: String, CodingKey {
         case balanceNanos = "BalanceNanos"
@@ -18,6 +18,6 @@ struct Response: Codable {
     
     let balanceNanos: Int?
     let error: String
-    let header: ResponseHeader?
+    let header: BlockHeader?
     let transactions: [Transaction]?
 }

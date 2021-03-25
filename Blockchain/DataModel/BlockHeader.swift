@@ -1,5 +1,5 @@
 //
-//  ResponseHeader.swift
+//  BlockHeader.swift
 //  BitClout
 //
 //  Created by Ludovic Landry on 3/20/21.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct ResponseHeader: Codable {
+struct BlockHeader: Codable {
     
     enum CodingKeys: String, CodingKey {
         case blockHashHex = "BlockHashHex"

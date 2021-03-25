@@ -35,7 +35,7 @@ class TransactionMetadata: Codable {
     // Depending on the txnType the following metadata is available.
     // - basicTransfer:     basicTransferTxindexMetadata
     // - bitcoinExchange:   bitcoinExchangeTxindexMetadata + basicTransferTxindexMetadata (fees)
-    // - blockReward:       no transaction metadata
+    // - blockReward:       no specific metadata
     // - creatorCoin:       creatorCoinTxindexMetadata + basicTransferTxindexMetadata (fees)
     // - follow:            followTxindexMetadata + basicTransferTxindexMetadata (fees)
     // - like:              likeTxindexMetadata + basicTransferTxindexMetadata (fees)
