@@ -1,5 +1,7 @@
 # BitClout
-Some tools for the BitClout blockchain
+Tools and analytics data for the BitClout blockchain
+
+![Screenshot](/Docs/public_key_connections.gif)
 
 ### 1. The blockchain datamodel:
 ![Screenshot](/Docs/Screenshot.png)
@@ -29,3 +31,5 @@ stateManager.refresh() { error in
 ### 3. More to come...
 
 In the meantime, feel free to play with this, and contribute back you findings if you think this might help others :)
+
+My profile: [@ludo](https://bitclout.com/u/ludo)
