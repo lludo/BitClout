@@ -29,8 +29,8 @@ struct PublicKeyMetadata: Codable {
     }
     
     // Depending on the txnType the following metadata is available.
-    // - basicTransfer:     [basicTransferOutput, basicTransferOutput]
-    // - bitcoinExchange:   [burnPublicKey]
+    // - basicTransfer:     [basicTransferOutput]
+    // - bitcoinExchange:   [burnPublicKey (BC1YLjWBf2qnDJmi8HZzzCPeXqy4dCKq95oqqzerAyW8MUTbuXTb1QT)]
     // - blockReward:       no transaction metadata
     // - creatorCoin:       [basicTransferOutput, creatorPublicKey]
     // - follow:            [basicTransferOutput, rollowedPublicKeyBase58Check]
