@@ -34,7 +34,7 @@ class NetworkClient {
         fetch(url: url, body: body, httpMethod: httpMethod, completion: completion)
     }
     
-    // mark: - Private
+    // MARK: - Private
     
     private func fetch(url: URL, body: [String : Any]?, httpMethod: String, completion: @escaping (Result<ExplorerResult, Error>) -> Void) {
         

@@ -37,7 +37,17 @@ class StorageClient {
         }
     }
     
-    // mark: - Private
+    func deleteBlock(height: Int) -> Error? {
+        let filename = geFilenameForBlock(height: height)
+        do {
+            try fileManager.removeItem(at: filename)
+        } catch (let error) {
+            return error
+        }
+        return nil
+    }
+    
+    // MARK: - Private
     
     private func getDocumentsDirectory() -> URL {
         let paths = fileManager.urls(for: .documentDirectory, in: .userDomainMask)
