@@ -16,7 +16,7 @@ class QueryManager {
         resursiveFetchBlock(fromHeight: height, transactionCount: 0, completion: completion)
     }
     
-    // mark: - Private
+    // MARK: - Private
     
     private func resursiveFetchBlock(fromHeight height: Int,
                                      transactionCount: Int,
