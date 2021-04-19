@@ -9,7 +9,7 @@ import Foundation
 
 class QueryManager {
     
-    private let networckClient = NetworkClient()
+    private let networkClient = NetworkClient()
     private let storageClient = StorageClient()
     
     func fetchBlocks(fromHeight height: Int = 0, completion: @escaping (Result<Int, Error>) -> Void) {
@@ -43,7 +43,7 @@ class QueryManager {
                     completion(.failure(error))
             }
         } else {
-            networckClient.getTransactions(blockHeight: height) { result in
+            networkClient.getTransactions(blockHeight: height) { result in
                 switch result {
                     case .success(let result):
                         print(">>>>>> Block \(height) fetched from explorer!\t(\(result.block.transactions?.count ?? 0) transactions)")

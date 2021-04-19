@@ -229,7 +229,8 @@ class StateManager {
                                 break
                             case .updateProfile:
                                 // TODO: Implement, you can help?
-                        }
+                        	break
+			}
                     }
                 case .failure(let error):
                     print(">>>>>> Failed to read with error: \(error)")
