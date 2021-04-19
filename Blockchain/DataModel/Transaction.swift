@@ -29,7 +29,7 @@ struct Transaction: Codable {
         case like = "LIKE"
         case privateMessage = "PRIVATE_MESSAGE"
         case submitPost = "SUBMIT_POST"
-        case swapIdentity  = "SWAP_IDENTITY"
+        case swapIdentity = "SWAP_IDENTITY"
         case updateBitcoinUsdExchangeRate = "UPDATE_BITCOIN_USD_EXCHANGE_RATE"
         case updateProfile = "UPDATE_PROFILE"
     }
