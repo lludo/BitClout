@@ -12,12 +12,12 @@ class StorageClient {
     private let fileManager = FileManager.default
     
     func hasDataForBlock(height: Int) -> Bool {
-        let filename = geFilenameForBlock(height: height)
+        let filename = getFilenameForBlock(height: height)
         return fileManager.fileExists(atPath: filename.path)
     }
     
     func writeBlock(data: Data, height: Int) -> Error? {
-        let filename = geFilenameForBlock(height: height)
+        let filename = getFilenameForBlock(height: height)
         do {
             try data.write(to: filename, options: .atomic)
         } catch (let error) {
@@ -27,7 +27,7 @@ class StorageClient {
     }
     
     func readBlock(height: Int) -> Result<Block, Error> {
-        let filename = geFilenameForBlock(height: height)
+        let filename = getFilenameForBlock(height: height)
         do {
             let data = try Data(contentsOf: filename)
             let result = self.parseBlockData(data: data)
@@ -38,7 +38,7 @@ class StorageClient {
     }
     
     func deleteBlock(height: Int) -> Error? {
-        let filename = geFilenameForBlock(height: height)
+        let filename = getFilenameForBlock(height: height)
         do {
             try fileManager.removeItem(at: filename)
         } catch (let error) {
@@ -54,7 +54,7 @@ class StorageClient {
         return paths[0]
     }
     
-    private func geFilenameForBlock(height: Int) -> URL {
+    private func getFilenameForBlock(height: Int) -> URL {
         return getDocumentsDirectory().appendingPathComponent("blocks/\(height).txt")
     }
     

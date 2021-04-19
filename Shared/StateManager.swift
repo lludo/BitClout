@@ -141,22 +141,6 @@ class StateManager {
                         continue
                     }
                     for transaction in transactions {
-                        /*
-                        // TEST : BEGIN
-                        if let transactionMetadata = transaction.transactionMetadata, let basicTransferMetadata = transactionMetadata.basicTransferTxindexMetadata {
-//                            if (transactionMetadata.transactorPublicKeyBase58Check == "BC1YLhNBkc3mhwuHw5Ucm8rP2tQsYPdVXkaNq3Cqs9o1oP5Dngeo4x1") {
-                                let x = findOrCreateAccount(publicKey: transactionMetadata.transactorPublicKeyBase58Check, block: block,
-                                                            fromPool: &accountsByPublicKey, swapPool: publicKeyOriginalToNewSwap)
-                                if x.walletAmountNanos != basicTransferMetadata.totalInputNanos {
-//                                    print(">> Got: \(x.walletAmountNanos), expected: \(basicTransferMetadata.totalInputNanos)")
-                                    x.addToWallet(amountNanos: basicTransferMetadata.totalInputNanos - x.walletAmountNanos, from: .transfer("?"))
-                                } else {
-//                                    print(">> Has: \(basicTransferMetadata.totalInputNanos)")
-                                }
-//                            }
-                        }
-                        // TEST : END
-                        */
                         do {
                             switch transaction.transactionType {
                                 case .basicTransfer:
