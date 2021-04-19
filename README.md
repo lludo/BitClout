@@ -16,7 +16,25 @@ Tools and analytics data for the BitClout blockchain
     - `printAllTransactionForCreatorCoins(privateKey:)`: To print all the buy/sell that happened to a creator coin, given it's public key. This is printed in csv format where each line is `blockHeight,coinsValueChange`.
 - `Tools`: Contains math functions to convert from $BitClout prices to number of coins given the existing coins in circulation and vice versa.
 
-Here is an example of how this can be used:
+Here is an example of how this can be used to resolve all accounts:
+
+```
+let stateManager = StateManager()
+stateManager.refresh() { error in
+    guard error == nil else { return }
+    
+    let allAccounts = stateManager.parseAllAccounts()
+        .filter { $0.transfertToPublickKeys.count > 0 || $0.transfertFromPublickKeys.count > 0 }
+        .sorted { $0.transfertToPublickKeys.count > $1.transfertToPublickKeys.count }
+    for account in allAccounts {
+        for transfertToPublickKey in account.transfertToPublickKeys {
+            print("\(account.publicKey),\(account.currentUsername ?? "?"),\(transfertToPublickKey),\(account.usernames)")
+        }
+    }
+}
+```
+
+Or a demo to print all the transactions for a creator:
 
 ```
 let stateManager = StateManager()
@@ -32,4 +50,5 @@ stateManager.refresh() { error in
 
 In the meantime, feel free to play with this, and contribute back you findings if you think this might help others :)
 
-My profile: [@ludo](https://bitclout.com/u/ludo)
+- My profile: [@ludo](https://bitclout.com/u/ludo)
+- Snapshot of [my feed](/MyFeed) before the image loss
