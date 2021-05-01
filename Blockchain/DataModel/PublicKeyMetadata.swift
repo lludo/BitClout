@@ -25,8 +25,9 @@ struct PublicKeyMetadata: Codable {
         case parentPosterPublicKeyBase58Check = "ParentPosterPublicKeyBase58Check"
         case posterPublicKeyBase58Check = "PosterPublicKeyBase58Check"
         case profilePublicKeyBase58Check = "ProfilePublicKeyBase58Check"
+        case receiverPublicKey = "ReceiverPublicKey"                            // Since block 19044
         case recipientPublicKeyBase58Check = "RecipientPublicKeyBase58Check"
-        case recloutedPublicKeyBase58Check = "RecloutedPublicKeyBase58Check" // Since block 13843
+        case recloutedPublicKeyBase58Check = "RecloutedPublicKeyBase58Check"    // Since block 13843
         case toPublicKeyBase58Check = "ToPublicKeyBase58Check"
     }
     

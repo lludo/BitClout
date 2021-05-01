@@ -25,12 +25,14 @@ struct Transaction: Codable {
         case bitcoinExchange = "BITCOIN_EXCHANGE"
         case blockReward = "BLOCK_REWARD"
         case creatorCoin = "CREATOR_COIN"
+        case creatorCoinTransfer = "CREATOR_COIN_TRANSFER"
         case follow = "FOLLOW"
         case like = "LIKE"
         case privateMessage = "PRIVATE_MESSAGE"
         case submitPost = "SUBMIT_POST"
         case swapIdentity = "SWAP_IDENTITY"
         case updateBitcoinUsdExchangeRate = "UPDATE_BITCOIN_USD_EXCHANGE_RATE"
+        case updateGlobalParams = "UPDATE_GLOBAL_PARAMS"    // Since block 19011
         case updateProfile = "UPDATE_PROFILE"
     }
     

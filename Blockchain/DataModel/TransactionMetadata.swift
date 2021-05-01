@@ -15,6 +15,7 @@ class TransactionMetadata: Codable {
         case bitcoinExchangeTxindexMetadata = "BitcoinExchangeTxindexMetadata"
         case blockHashHex = "BlockHashHex"
         case creatorCoinTxindexMetadata = "CreatorCoinTxindexMetadata"
+        case creatorCoinTransferTxindexMetadata = "CreatorCoinTransferTxindexMetadata"
         case followTxindexMetadata = "FollowTxindexMetadata"
         case likeTxindexMetadata = "LikeTxindexMetadata"
         case privateMessageTxindexMetadata = "PrivateMessageTxindexMetadata"
@@ -47,6 +48,7 @@ class TransactionMetadata: Codable {
     let basicTransferTxindexMetadata: BasicTransferMetadata?
     let bitcoinExchangeTxindexMetadata: BitcoinExchangeMetadata?
     let creatorCoinTxindexMetadata: CreatorCoinMetadata?
+    let creatorCoinTransferTxindexMetadata: CreatorCoinTransferMetadata?
     let followTxindexMetadata: FollowMetadata?
     let likeTxindexMetadata: LikeMetadata?
     let privateMessageTxindexMetadata: PrivateMessageMetadata?
