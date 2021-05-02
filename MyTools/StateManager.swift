@@ -123,10 +123,11 @@ class StateManager {
         print("> Done!")
     }
     
+    var publicKeysInOrder: [String] = []
     
     func parseAllAccounts() -> [Account] {
         var accountsByPublicKey: [String : Account] = [:]
-        var publicKeyOriginalToNewSwap: [String: String] = [:]
+        var publicKeyOriginalToNewSwap: [String : String] = [:]
         blockIteration: for blockHeight in 0...self.lastAvailableBlockHeight {
             World.currentBlockHeight = blockHeight
             let result = storage.readBlock(height: blockHeight)
@@ -153,8 +154,11 @@ class StateManager {
                                     try parseBlockReward(transaction: transaction, block: block,
                                                          accountsByPublicKey: &accountsByPublicKey, publicKeyOriginalToNewSwap: publicKeyOriginalToNewSwap)
                                 case .creatorCoin:
-//                                    try parseCreatorCoin(transaction: transaction, block: block,
-//                                                         accountsByPublicKey: &accountsByPublicKey, publicKeyOriginalToNewSwap: publicKeyOriginalToNewSwap)
+                                    try parseCreatorCoin(transaction: transaction, block: block,
+                                                         accountsByPublicKey: &accountsByPublicKey, publicKeyOriginalToNewSwap: publicKeyOriginalToNewSwap)
+                                    break
+                                case .creatorCoinTransfer:
+                                    // TODO: implement
                                     break
                                 case .follow:
                                     try parseFollow(transaction: transaction, block: block,
@@ -174,6 +178,10 @@ class StateManager {
                                 case .updateBitcoinUsdExchangeRate:
                                     try parseUpdateBitcoinUsdExchangeRate(transaction: transaction, block: block,
                                                                           accountsByPublicKey: &accountsByPublicKey, publicKeyOriginalToNewSwap: publicKeyOriginalToNewSwap)
+                                    break
+                                case .updateGlobalParams:
+                                    // TODO: implement
+                                    break
                                 case .updateProfile:
                                     try parseUpdateProfile(transaction: transaction, block: block,
                                                            accountsByPublicKey: &accountsByPublicKey, publicKeyOriginalToNewSwap: publicKeyOriginalToNewSwap)
@@ -218,7 +226,7 @@ class StateManager {
         print(">>>>>> accounts found: \(accountsByPublicKey.count)")
         print("> Done!")
         
-        return Array(accountsByPublicKey.values)
+        return publicKeysInOrder.map { accountsByPublicKey[$0]! }
     }
     
     // MARK: - Private
@@ -237,6 +245,7 @@ class StateManager {
             let blockDate = Date(timeIntervalSince1970: Double(block.header!.tstampSecs))
             let account = Account(publicKey: publicKey, firstTransactionDate: blockDate, isGenesis: isGenesis)
             accountsByPublicKey[publicKey] = account
+            publicKeysInOrder.append(publicKey)
             return account
         }
     }
@@ -279,7 +288,7 @@ class StateManager {
             sender.removeFromWallet(amountNanos: totalAmountNanosSent, to: .transfer(receiverAccounts.first!.key.publicKey)) // /!\ Only one receiver for now /!\
             sender.removeFromWallet(amountNanos: basicTransferMetadata.feeNanos, to: .fees)
             sender.increaseTransactionsCount()
-        } else { // Receiver not specified, because we are sending to ourself? Assume transactor is receiver, so just pay fees for no reason?
+        } else { // Receiver not specified, because we are sending to ourself? Assume transactor is receiver so just pay fees for no reason?
             sender.removeFromWallet(amountNanos: basicTransferMetadata.feeNanos, to: .fees)
             sender.increaseTransactionsCount()
         }

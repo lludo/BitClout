@@ -16,27 +16,70 @@ enum BitCloutError: Error {
 
 class NetworkClient {
     
+    let baseUrl = "https://api.bitclout.com"
+    
     typealias ExplorerResult = (rawData: Data, block: Block)
     
-    func getTransactions(address: String, completion: @escaping (Result<ExplorerResult, Error>) -> Void) {
-        let url = URL(string: "https://api.bitclout.com/api/v1/transaction-info")!
-        let body = ["PublicKeyBase58Check": address]
+    // MARK: - Get Profile
+    
+    func getSingleProfile(username: String, completion: @escaping (Result<Profile, Error>) -> Void) {
+        let url = URL(string: "\(baseUrl)/get-single-profile")!
+        let body = ["PublicKeyBase58Check" : "", "Username" : username]
         let httpMethod = "POST"
         
-        fetch(url: url, body: body, httpMethod: httpMethod, completion: completion)
+        fetch(url: url, body: body, httpMethod: httpMethod) { result in
+            switch result {
+                case .success(let data):
+                    let decoder = JSONDecoder()
+                    do {
+                        let singleProfileResponse = try decoder.decode(SingleProfileResponse.self, from: data)
+                        completion(.success(singleProfileResponse.profile))
+                    } catch {
+                        completion(.failure(BitCloutError.jsonFormatError))
+                    }
+                case .failure(let error):
+                    completion(.failure(error))
+            }
+        }
+    }
+    
+    // MARK: - Block Explorer
+    
+    func getTransactions(address: String, completion: @escaping (Result<ExplorerResult, Error>) -> Void) {
+        let url = URL(string: "\(baseUrl)/api/v1/transaction-info")!
+        let body = ["PublicKeyBase58Check" : address]
+        let httpMethod = "POST"
+        
+        fetch(url: url, body: body, httpMethod: httpMethod) { result in
+            switch result {
+                case .success(let data):
+                    let result = self.parseBlockData(data: data)
+                    completion(result)
+                case .failure(let error):
+                    completion(.failure(error))
+            }
+        }
     }
     
     func getTransactions(blockHeight: Int, completion: @escaping (Result<ExplorerResult, Error>) -> Void) {
-        let url = URL(string: "https://api.bitclout.com/api/v1/block")!
-        let body: [String : Any] = ["Height": blockHeight, "FullBlock": true]
+        let url = URL(string: "\(baseUrl)/api/v1/block")!
+        let body: [String : Any] = ["Height" : blockHeight, "FullBlock" : true]
         let httpMethod = "POST"
         
-        fetch(url: url, body: body, httpMethod: httpMethod, completion: completion)
+        fetch(url: url, body: body, httpMethod: httpMethod) { result in
+            switch result {
+                case .success(let data):
+                    let result = self.parseBlockData(data: data)
+                    completion(result)
+                case .failure(let error):
+                    completion(.failure(error))
+            }
+        }
     }
     
     // MARK: - Private
     
-    private func fetch(url: URL, body: [String : Any]?, httpMethod: String, completion: @escaping (Result<ExplorerResult, Error>) -> Void) {
+    private func fetch(url: URL, body: [String : Any]?, httpMethod: String, completion: @escaping (Result<Data, Error>) -> Void) {
         
         // Configure request authentication
         var request = URLRequest(url: url)
@@ -60,8 +103,7 @@ class NetworkClient {
                 if content.starts(with: "<!DOCTYPE html>") {
                     completion(.failure(BitCloutError.captchaFoundError(content)))
                 } else {
-                    let result = self.parseBlockData(data: data)
-                    completion(result)
+                    completion(.success(data))
                 }
             } else {
                 completion(.failure(BitCloutError.unknownError))

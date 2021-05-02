@@ -6,6 +6,9 @@
 //
 
 import Foundation
+#if os(iOS)
+import UIKit
+#endif
 
 class Account: Hashable {
     
@@ -142,6 +145,21 @@ class Account: Hashable {
             return nil
         }
     }
+    
+    #if os(iOS)
+    /// Return only the picture from the latest update.
+    var currentProfilePic: UIImage? {
+        get {
+            for profile in profileMetadata.reversed() {
+                if !profile.newProfilePic.isEmpty {
+                    let profilePicData = NSData(base64Encoded: String(profile.newProfilePic.dropFirst(23)), options: .ignoreUnknownCharacters)!
+                    return UIImage(data: profilePicData as Data)!
+                }
+            }
+            return nil
+        }
+    }
+    #endif
     
     func swapToNewPublicKey(_ publicKey: String) {
         publicKeys.append(publicKey)
