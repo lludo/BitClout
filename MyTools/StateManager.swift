@@ -49,7 +49,7 @@ class StateManager {
                     if case BitCloutError.captchaFoundError(let htmlContent) = error {
                         print(">>>>>> Error: \(htmlContent)")
                         completion(error)
-                    } else if case BitCloutError.responseBlockError(let message) = error {
+                    } else if case BitCloutError.responseApiError(let message) = error {
                         if message.contains("must be >= 0 and <= height of best block chain") {
                             print(">>>>>> Done! (Reached the last available block)")
                             if let range = message.range(of: "block chain tip "), let tipBlockHeight = Int(message[range.upperBound...]) {

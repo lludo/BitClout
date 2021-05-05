@@ -10,6 +10,8 @@ import Foundation
 import UIKit
 #endif
 
+typealias NoIdeaYet_SendPRIfYouFindOut_ThankYou = String
+
 struct Profile: Codable {
     
     enum CodingKeys: String, CodingKey {

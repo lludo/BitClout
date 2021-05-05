@@ -7,8 +7,6 @@
 
 import Foundation
 
-typealias NoIdeaYet_SendPRIfYouFindOut_ThankYou = String
-
 struct SingleProfileResponse: Codable {
     
     enum CodingKeys: String, CodingKey {

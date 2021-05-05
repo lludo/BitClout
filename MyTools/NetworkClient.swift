@@ -8,7 +8,7 @@
 import Foundation
 
 enum BitCloutError: Error {
-    case responseBlockError(String)
+    case responseApiError(String)
     case unknownError
     case jsonFormatError
     case captchaFoundError(String)
@@ -19,6 +19,55 @@ class NetworkClient {
     let baseUrl = "https://api.bitclout.com"
     
     typealias ExplorerResult = (rawData: Data, block: Block)
+    
+    // MARK: - Get Posts
+    
+    enum FetchBy {
+        case publicKey(String)
+        case username(String)
+    }
+    
+    func getPosts(by fetchBy: FetchBy, fetchCount: Int = 10, completion: @escaping (Result<[Post], Error>) -> Void) {
+        let publicKey: String?
+        let username: String?
+        switch fetchBy {
+            case .publicKey(let key):
+                publicKey = key
+                username = nil
+            case .username(let name):
+                publicKey = nil
+                username = name
+        }
+        
+        let url = URL(string: "\(baseUrl)/get-posts-for-public-key")!
+        let body: [String : Any] = [
+            "PublicKeyBase58Check" : publicKey ?? "",
+            "Username" : username ?? "",
+//            "ReaderPublicKeyBase58Check" : "BC1YLiWgKXYrpTkUZHyCbhfxU1bgJCQGcBvsQvPWuAwiVWnDFsvxudi",
+            "LastPostHashHex" : "",
+            "NumToFetch" : fetchCount
+        ]
+        let httpMethod = "POST"
+        
+        fetch(url: url, body: body, httpMethod: httpMethod) { result in
+            switch result {
+                case .success(let data):
+                    let decoder = JSONDecoder()
+                    do {
+                        let postsResponse = try decoder.decode(PostsResponse.self, from: data)
+                        guard postsResponse.error?.isEmpty ?? true else {
+                            completion(.failure(BitCloutError.responseApiError(postsResponse.error!)))
+                            return
+                        }
+                        completion(.success(postsResponse.posts ?? []))
+                    } catch {
+                        completion(.failure(BitCloutError.jsonFormatError))
+                    }
+                case .failure(let error):
+                    completion(.failure(error))
+            }
+        }
+    }
     
     // MARK: - Get Profile
     
@@ -119,7 +168,7 @@ class NetworkClient {
             let decoder = JSONDecoder()
             let block = try decoder.decode(Block.self, from: data)
             guard block.error.isEmpty else {
-                return .failure(BitCloutError.responseBlockError(block.error))
+                return .failure(BitCloutError.responseApiError(block.error))
             }
             return .success((rawData: data, block: block))
         } catch (let error) {

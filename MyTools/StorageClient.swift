@@ -63,7 +63,7 @@ class StorageClient {
             let decoder = JSONDecoder()
             let block = try decoder.decode(Block.self, from: data)
             guard block.error.isEmpty else {
-                return .failure(BitCloutError.responseBlockError(block.error))
+                return .failure(BitCloutError.responseApiError(block.error))
             }
             return .success(block)
         } catch (let error) {
